@@ -1,4 +1,5 @@
 <?php
-echo "howdy Earth!";
-echo "<br />";
-echo "This is a test..."; 
+include "./main/AppCore.php";
+
+$App = new AppCore("../odbal3.conf");
+ 

@@ -9,5 +9,9 @@ class AppCore {
 // Sets will need to specifically establish user access level
 // or will not be visible at all.
 
-
+ function __construct($primaryConf) {
+  echo $primaryConf;
+  }
+ 
+ 
  } // end class AppCore
