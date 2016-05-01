@@ -15,9 +15,30 @@ class AppCore {
  function __construct($primaryConf) {
   echo "Loading...<br />";
   include $primaryConf;
+  $testconn = new mysqli($host, $user_guest, $pass_guest);
+  if(!$q = $testconn->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?")) {
+   echo "Error. Contact administrator.";
+   exit();
+   }
+  if(!$q->bind_param("s", $db)) {
+   echo "Error. Contact administrator.";
+   exit();   
+   }
+  if(!$q->execute()) {
+   echo "Error. Contact administrator.";
+   exit();   
+   }
+   $result = $q->get_result();
+   while ($row = $result->fetch_array(MYSQLI_NUM)) {
+    foreach ($row as $r) {
+     print "$r ";
+     }
+    print "\n";
+    }
   $this->DBconn1 = new mysqli($host, $user_guest, $pass_guest, $db);
   if (mysqli_connect_errno()) {
-   echo("Connect failed: " . mysqli_connect_error());
+   // if database doesn't exist, then head into setup
+   echo("Connect failed: " . mysqli_connect_errno()); //mysqli_connect_error());
    exit();
    }
   if (!$this->DBconn1->set_charset("utf8")) {
