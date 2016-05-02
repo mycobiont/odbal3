@@ -18,3 +18,8 @@ $setup = "true";
 $user_admin = "";
 $pass_admin = "";
 
+// General global variables:
+$DEBUG = true;
+$LOGFILE_URL_REQUESTS = "log_url_requests.log";
+$LOGFILE = "log.log";
+$LOGFILE_DEBUG = "log_debug.log";
