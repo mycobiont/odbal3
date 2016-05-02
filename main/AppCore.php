@@ -1,5 +1,7 @@
 <?php
 
+include "Logging.php";
+
 class AppCore {
  // Constructor is to handle security including early 
  // sanitation of URL arguements and user access identification
