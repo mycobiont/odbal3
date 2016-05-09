@@ -1,6 +1,7 @@
 <?php
 
 include "Logging.php";
+register_shutdown_function('shutdownLog');
 
 class AppCore {
  // Constructor is to handle security including early 
@@ -16,7 +17,7 @@ class AppCore {
  
  function __construct($primaryConf) {
    //Absolute first thing... log the URL request with IP
-   echo 'a';
+   if ($DEBUG) $DEBUG_ARRAY[] = "Constructing AppCore";
    if(!logURLrequest()) {
      echo "Internal logging error.";
      exit();
@@ -25,15 +26,18 @@ class AppCore {
    include $primaryConf;
    $this->URLargs = $this->SanitizeURL(); 
    echo print_r($this->URLargs, true);
-   $this->DBconn1 = new mysqli($host, $user_guest, $pass_guest, $db);
+   $this->DBconn1 = new mysqli($HOST, $GUEST_USER, $GUEST_PASS, $DB);
    if (mysqli_connect_errno()) {
-     // if database doesn't exist, then head into setup
-     echo("Connect failed: " . mysqli_connect_errno()); //mysqli_connect_error());
+     $LOGARRAY[] = "DB connection failed with guest user. mysqli_connect_errno = " 
+             . mysqli_connect_errno() . ', ' 
+             . mysqli_connect_error();
+     echo "Failed. Contact administrator."; 
      exit();
    }
    if (!$this->DBconn1->set_charset("utf8")) {
      // see https://www.toptal.com/php/a-utf-8-primer-for-php-and-mysql
-     printf("Error loading character set utf8: %s\n", $mysqli->error);
+     $LOGARRAY[] = "Error loading character set utf8: " . $mysqli->error;
+     echo "Failed. Contact administrator."; 
      exit();
    }
  }
